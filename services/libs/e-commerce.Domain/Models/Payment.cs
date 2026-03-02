@@ -15,15 +15,16 @@ public class Payment : AggregateRoot<PaymentId>
         this.Status = PaymentStatus.NotPaid;
         this.OrderId = orderId;
         this.Amount = amount;
-        this.ProcessedAt = DateTime.UtcNow;
+        this.ProcessedAt = default;
     }
 
     public void Pay()
     {
-        if (this.Status != PaymentStatus.Paid)
+        if (this.Status == PaymentStatus.Paid)
             throw new DomainException("Cannot pay for paid item");
         
         this.Status = PaymentStatus.Paid;
         this.ProcessedAt = DateTime.UtcNow;
+        RaiseDomainEvent(new PaymentCompletedDomainEvent(Id, OrderId, Amount));
     }
 }

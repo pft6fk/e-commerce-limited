@@ -1,9 +1,15 @@
 ﻿namespace e_commerce.Domain.Events;
 
-public class PaymentEvents
+public class PaymentCompletedDomainEvent : DomainEvent
 {
-    public bool PaymentCompletedDomainEvent()
+    public PaymentId PaymentId { get; }
+    public OrderId OrderId { get; }
+    public Money Amount { get; }
+
+    public PaymentCompletedDomainEvent(PaymentId paymentId, OrderId orderId, Money amount)
     {
-        return true;
+        PaymentId = paymentId;
+        OrderId = orderId;
+        Amount = amount;
     }
 }

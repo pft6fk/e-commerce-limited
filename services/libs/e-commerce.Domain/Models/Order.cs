@@ -1,4 +1,6 @@
-﻿namespace e_commerce.Domain.Models;
+﻿using e_commerce.Domain.Events;
+
+namespace e_commerce.Domain.Models;
 
 public class Order : AggregateRoot<OrderId>
 {
@@ -35,6 +37,9 @@ public class Order : AggregateRoot<OrderId>
             throw new DomainException($"Cannot process payment because order status is {this.Status.ToString()}");
         }
         this.Status = OrderStatus.Paid;
+
+        RaiseDomainEvent(new OrderPaidDomainEvent(Id, CustomerId, TotalPrice));
+
     }
 
     public void Cancel()
@@ -51,6 +56,8 @@ public class Order : AggregateRoot<OrderId>
             throw new DomainException("Cannot ship if not paid");
         }
         this.Status = OrderStatus.Shipped;
+
+        RaiseDomainEvent(new OrderShippedDomainEvent(Id, CustomerId, TotalPrice));
     }
 
     public void Complete()
@@ -59,7 +66,7 @@ public class Order : AggregateRoot<OrderId>
         {
             throw new DomainException("Cannot complete since order is not Shipped");
         }
-            this.Status = OrderStatus.Completed;
+        this.Status = OrderStatus.Completed;
     }
 
     public void RemoveItem(OrderItemId itemId)

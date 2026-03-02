@@ -9,7 +9,7 @@ public class Product: AggregateRoot<ProductId>
     public Money Price { get; private set; }
     public bool IsActive { get; private set; }
 
-    public Product(string name, Money price, string desciption, bool isActive)
+    public Product(string name, Money price, string description, bool isActive)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Product name cannot be null or empty.");
@@ -18,7 +18,7 @@ public class Product: AggregateRoot<ProductId>
 
         this.Name = name;
         this.Price = price;
-        this.Description = desciption;
+        this.Description = description;
         this.IsActive = isActive;
     }
     public void Activate()
@@ -29,4 +29,12 @@ public class Product: AggregateRoot<ProductId>
     {
         IsActive = false;
     }
+    public void UpdatePrice(Money newPrice)
+    {
+        if (newPrice == null || newPrice.Amount < 0)
+            throw new DomainException("Price must be zero or positive.");
+
+        Price = newPrice;
+    }
+
 }
