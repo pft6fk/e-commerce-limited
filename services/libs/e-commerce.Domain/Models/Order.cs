@@ -1,4 +1,4 @@
-﻿namespace e_commerce.Domain.Modes;
+﻿namespace e_commerce.Domain.Models;
 
 public class Order : AggregateRoot<OrderId>
 {

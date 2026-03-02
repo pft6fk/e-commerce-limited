@@ -1,11 +1,4 @@
-﻿using e_commerce.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace e_commerce.Domain.Modes;
+﻿namespace e_commerce.Domain.Models;
 
 public class OrderItem : Entity<OrderItemId>
 {
