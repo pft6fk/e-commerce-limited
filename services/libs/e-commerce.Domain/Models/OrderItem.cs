@@ -2,7 +2,6 @@
 
 public class OrderItem : Entity<OrderItemId>
 {
-    public OrderItemId OrderItemId { get; private set; }
     public ProductId ProductId { get; private set; }
     public int Quantity { get; private set; }
     public Money UnitPrice { get; private set; }
@@ -18,9 +17,8 @@ public class OrderItem : Entity<OrderItemId>
         if (string.IsNullOrWhiteSpace(unitPrice.Currency))
             throw new ArgumentException("Unit price currency cannot be null or empty.");
 
-        Quantity = quantity;
+        this.Quantity = quantity;
         this.UnitPrice = unitPrice;
-        ProductId = productId;
-        OrderItemId = OrderItemId.New();
+        this.ProductId = productId;
     }
 }

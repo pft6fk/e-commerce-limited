@@ -3,7 +3,6 @@
 public class Order : AggregateRoot<OrderId>
 {
     private readonly List<OrderItem> _items = new();
-    public OrderId Id { get; private set; }
     public IReadOnlyCollection<OrderItem> Items => _items;
     public CustomerId CustomerId { get; private set; }
     public OrderStatus Status { get; private set; }
@@ -31,16 +30,16 @@ public class Order : AggregateRoot<OrderId>
         {
             throw new DomainException("Cannot process payment because no items are within order");
         }    
-        if (this.Status == OrderStatus.Pending)
+        if (this.Status != OrderStatus.Pending)
         {  
-            this.Status = OrderStatus.Paid;
+            throw new DomainException($"Cannot process payment because order status is {this.Status.ToString()}");
         }
-        throw new DomainException($"Cannot process payment because order status is {this.Status.ToString()}");
+        this.Status = OrderStatus.Paid;
     }
 
     public void Cancel()
     {
-        if (this.Status == OrderStatus.Paid || this.Status == OrderStatus.Shipped || this.Status == OrderStatus.Completed)
+        if (this.Status != OrderStatus.Pending)
             throw new DomainException($"Cannot cancel orders with status of {this.Status.ToString()}");
         this.Status = OrderStatus.Cancelled;
     }
@@ -56,15 +55,22 @@ public class Order : AggregateRoot<OrderId>
 
     public void Complete()
     {
-        if(this.Status == OrderStatus.Shipped)
+        if(this.Status != OrderStatus.Shipped)
         {
-            this.Status = OrderStatus.Completed;
+            throw new DomainException("Cannot complete since order is not Shipped");
         }
-        throw new DomainException("Cannot complete since order is not Shipped");
+            this.Status = OrderStatus.Completed;
     }
 
-    public void RemoveItem(ProductId itemId)
+    public void RemoveItem(OrderItemId itemId)
     {
+        if (Status != OrderStatus.Pending)
+            throw new DomainException($"Cannot remove items from order with status {Status.ToString()}.");
 
+        var item = _items.FirstOrDefault(x => x.Id == itemId);
+        if (item is null)
+            throw new DomainException($"Item {itemId.Value} not found in order.");
+
+        _items.Remove(item);
     }
 }

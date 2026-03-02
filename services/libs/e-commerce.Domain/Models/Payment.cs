@@ -2,10 +2,9 @@
 
 public class Payment : AggregateRoot<PaymentId>
 {
-    public PaymentId Id { get; private set; } 
     public OrderId OrderId { get; private set; } 
     public Money Amount { get; private set; } 
-    public OrderStatus Status { get; private set; } 
+    public PaymentStatus Status { get; private set; } 
     public DateTime ProcessedAt { get; private set; }
 
     public Payment(OrderId orderId, Money amount)
@@ -13,5 +12,18 @@ public class Payment : AggregateRoot<PaymentId>
         if(orderId == null)
             throw new ArgumentNullException(nameof(orderId));
 
+        this.Status = PaymentStatus.NotPaid;
+        this.OrderId = orderId;
+        this.Amount = amount;
+        this.ProcessedAt = DateTime.UtcNow;
+    }
+
+    public void Pay()
+    {
+        if (this.Status != PaymentStatus.Paid)
+            throw new DomainException("Cannot pay for paid item");
+        
+        this.Status = PaymentStatus.Paid;
+        this.ProcessedAt = DateTime.UtcNow;
     }
 }
