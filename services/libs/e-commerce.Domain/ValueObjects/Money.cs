@@ -3,21 +3,26 @@
 public class Money
 {
     public string Currency { get; private set; }
-    public decimal Amount { get; private set; } 
-
+    public decimal Amount { get; private set; }
+    public static Money Zero => new(0, "USD");
     public Money(decimal amount, string currency)
     {
-        if (amount < 0)
+        //if (amount < 0)
+        //{
+        //    throw new ArgumentException("Amount cannot be negative.");
+        //}
+        if (string.IsNullOrWhiteSpace(currency))
         {
-            throw new ArgumentException("Amount cannot be negative.");
+            throw new ArgumentException("Currency cannot be null or empty.");
         }
+
         Amount = amount;
         Currency = currency;
     }
 
     public static Money operator +(Money left, Money right)
     {
-        if (left.Currency != right.Currency)
+        if (left.Currency.ToLower() != right.Currency.ToLower())
             throw new InvalidOperationException("Cannot add different currencies.");
 
         return new Money(left.Amount + right.Amount, left.Currency);
@@ -33,7 +38,7 @@ public class Money
     }
     public static bool operator ==(Money left, Money right)
     {
-        if (left.Currency != right.Currency)
+        if (left.Currency.ToLower() != right.Currency.ToLower())
             throw new InvalidOperationException("Cannot compare different currencies.");
 
         return left.Amount == right.Amount;
@@ -41,7 +46,7 @@ public class Money
     }
     public static bool operator !=(Money left, Money right)
     {
-        if (left.Currency != right.Currency)
+        if (left.Currency.ToLower() != right.Currency.ToLower())
             throw new InvalidOperationException("Cannot compare different currencies.");
 
         return left.Amount != right.Amount;
