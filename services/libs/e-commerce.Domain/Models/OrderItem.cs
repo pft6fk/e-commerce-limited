@@ -10,8 +10,6 @@ public class OrderItem : Entity<OrderItemId>
     {
         if (quantity <= 0)
             throw new ArgumentException("Quantity must be greater than 0.");
-        if (unitPrice == null)
-            throw new ArgumentNullException(nameof(unitPrice));
         if(unitPrice.Amount <= 0)
             throw new ArgumentException("Unit price must be greater than 0.");
         if (string.IsNullOrWhiteSpace(unitPrice.Currency))
