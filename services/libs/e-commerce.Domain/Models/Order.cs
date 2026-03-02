@@ -15,18 +15,17 @@ public class Order : AggregateRoot<OrderId>
         this.CustomerId = customerId;
         this.Status = OrderStatus.Pending;
         this.CreatedAt = DateTime.UtcNow;
-        this.Id = OrderId.New();
     }
 
     public void AddItem(OrderItem item)
     {
         if (this.Status > OrderStatus.Pending )
-            throw new DomainException($"Cannot add item due to status being {this.Status}");
+            throw new DomainException($"Cannot add item due to status being {this.Status.ToString()}");
         
         _items.Add(item);
     }
 
-    public bool Pay(OrderId id)
+    public void Pay()
     {
         if (!_items.Any())
         {
@@ -35,41 +34,37 @@ public class Order : AggregateRoot<OrderId>
         if (this.Status == OrderStatus.Pending)
         {  
             this.Status = OrderStatus.Paid;
-            return true;
         }
-
-        return false;
+        throw new DomainException($"Cannot process payment because order status is {this.Status.ToString()}");
     }
 
-    public bool Cancel(OrderId id)
+    public void Cancel()
     {
+        if (this.Status == OrderStatus.Paid || this.Status == OrderStatus.Shipped || this.Status == OrderStatus.Completed)
+            throw new DomainException($"Cannot cancel orders with status of {this.Status.ToString()}");
         this.Status = OrderStatus.Cancelled;
-
-        return true;
     }
 
-    public bool Ship(OrderId id)
+    public void Ship()
     {
-        if(this.Status == OrderStatus.Paid )
+        if(this.Status != OrderStatus.Paid)
         {
-            this.Status = OrderStatus.Shipped;
-            return true;
+            throw new DomainException("Cannot ship if not paid");
         }
-        throw new DomainException("Cannot ship if not paid");
+        this.Status = OrderStatus.Shipped;
     }
 
-    public bool Complete(OrderId id)
+    public void Complete()
     {
         if(this.Status == OrderStatus.Shipped)
         {
             this.Status = OrderStatus.Completed;
-            return true;
         }
         throw new DomainException("Cannot complete since order is not Shipped");
     }
 
-    public bool RemoveItem(ProductId itemId)
+    public void RemoveItem(ProductId itemId)
     {
-        return true;
+
     }
 }
