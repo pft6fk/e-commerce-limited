@@ -9,6 +9,7 @@ public class StockItem : AggregateRoot<ProductId>
         if (quantity < 0)
             throw new ArgumentException("Cannot create negative amount of stock");
         this.Id = productId;
+        this.AvailableQuantity = quantity;
     }
     public void IncreaseStock(int quantity)
     {
@@ -16,6 +17,7 @@ public class StockItem : AggregateRoot<ProductId>
             throw new ArgumentException($"Cannot increase stock amount by {quantity}.");
 
         AvailableQuantity += quantity;
+        RaiseDomainEvent(new StockIncreasedDomainEvent(quantity, Id));
     }
     
     public void ReduceStock(int quantity)
@@ -23,7 +25,9 @@ public class StockItem : AggregateRoot<ProductId>
         if (quantity <= 0)
             throw new ArgumentException($"Cannot decrease stock amount by {quantity}.");
         if (AvailableQuantity < quantity)
-            throw new DomainException($"Not enough stock. Available: {AvailableQuantity}, requested: {quantity}}");
+            throw new DomainException($"Not enough stock. Available: {AvailableQuantity}, requested: {quantity}");
         AvailableQuantity -= quantity;
+
+        RaiseDomainEvent(new StockReducedDomainEvent(quantity, Id));
     }
 }
