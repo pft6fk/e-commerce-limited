@@ -103,7 +103,7 @@ public class OrderTests
     [Fact]
     public void Pay_WhenNoItems_ShouldThrowDomainException()
     {
-        var order = CreateOrder(); // no items added
+        var order = CreateOrder(); 
 
         var act = () => order.Pay();
 
@@ -114,9 +114,9 @@ public class OrderTests
     public void Pay_WhenAlreadyPaid_ShouldThrowDomainException()
     {
         var order = CreateOrderWithItems();
-        order.Pay(); // now Paid
+        order.Pay(); 
 
-        var act = () => order.Pay(); // try again
+        var act = () => order.Pay(); 
 
         act.Should().Throw<DomainException>();
     }

@@ -9,12 +9,20 @@ public class Customer : AggregateRoot<CustomerId>
 
     public Customer(string firstName, string lastName, string email)
     {
-        if(string.IsNullOrEmpty(email))
-            throw new ArgumentNullException("Email cannot be null");
+        if(IsValidEmail(email))
+            throw new ArgumentNullException("Provide valid email");
 
         this.FirstName = firstName;
         this.LastName = lastName;
         this.Email = email;
         this.RegisteredAt = DateTime.UtcNow;
+    }
+    private bool IsValidEmail(string email)
+    {
+        EmailAddressAttribute e = new EmailAddressAttribute();
+        if (e.IsValid(email))
+            return true;
+        else
+            return false;
     }
 }
