@@ -9,7 +9,7 @@ public class Customer : AggregateRoot<CustomerId>
 
     public Customer(string firstName, string lastName, string email)
     {
-        if(IsValidEmail(email))
+        if(!IsValidEmail(email))
             throw new ArgumentNullException("Provide valid email");
 
         this.FirstName = firstName;
