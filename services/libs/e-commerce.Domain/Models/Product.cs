@@ -13,7 +13,7 @@ public class Product: AggregateRoot<ProductId>
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Product name cannot be null or empty.");
-        if (price == null || string.IsNullOrEmpty(price.Currency) || price.Amount < 0)
+        if (price is null || string.IsNullOrEmpty(price.Currency) || price.Amount < 0)
             throw new ArgumentNullException(nameof(price));
 
         this.Name = name;
@@ -31,7 +31,7 @@ public class Product: AggregateRoot<ProductId>
     }
     public void UpdatePrice(Money newPrice)
     {
-        if (newPrice == null || newPrice.Amount < 0)
+        if (newPrice is null || newPrice.Amount < 0)
             throw new DomainException("Price must be zero or positive.");
 
         Price = newPrice;
