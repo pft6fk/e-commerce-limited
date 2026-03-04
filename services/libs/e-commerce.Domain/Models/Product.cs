@@ -8,7 +8,10 @@ public class Product: AggregateRoot<ProductId>
     public string Description  { get; private set; }
     public Money Price { get; private set; }
     public bool IsActive { get; private set; }
-
+    private Product()
+    {
+        
+    }
     public Product(string name, Money price, string description, bool isActive)
     {
         if (string.IsNullOrWhiteSpace(name))

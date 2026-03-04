@@ -6,7 +6,10 @@ public class Payment : AggregateRoot<PaymentId>
     public Money Amount { get; private set; } 
     public PaymentStatus Status { get; private set; } 
     public DateTime ProcessedAt { get; private set; }
-
+    private Payment()
+    {
+        
+    }
     public Payment(OrderId orderId, Money amount)
     {
         if(orderId == null)

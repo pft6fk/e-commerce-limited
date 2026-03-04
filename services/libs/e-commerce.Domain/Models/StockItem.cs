@@ -4,6 +4,10 @@ public class StockItem : AggregateRoot<ProductId>
 {
     public int AvailableQuantity { get; private set; }
     public byte[] RowVersion { get; private set; }
+    private StockItem()
+    {
+        
+    }
     public StockItem(ProductId productId, int quantity = 0)
     {
         if (quantity < 0)

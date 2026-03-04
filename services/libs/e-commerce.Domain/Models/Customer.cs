@@ -6,7 +6,10 @@ public class Customer : AggregateRoot<CustomerId>
     public string LastName { get; private set; }
     public string Email { get; private set; }
     public DateTime RegisteredAt { get; private set; }
-
+    private Customer()
+    {
+        
+    }
     public Customer(string firstName, string lastName, string email)
     {
         if(!IsValidEmail(email))

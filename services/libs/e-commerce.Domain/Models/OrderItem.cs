@@ -6,6 +6,10 @@ public class OrderItem : Entity<OrderItemId>
     public int Quantity { get; private set; }
     public Money UnitPrice { get; private set; }
     public Money TotalPrice => UnitPrice * Quantity;
+    private OrderItem()
+    {
+        
+    }
     public OrderItem(int quantity, Money unitPrice, ProductId productId)
     {
         if (quantity <= 0)

@@ -10,7 +10,10 @@ public class Order : AggregateRoot<OrderId>
     public OrderStatus Status { get; private set; }
     public Money TotalPrice => _items.Select(x => x.TotalPrice).Aggregate(Money.Zero, (acc, next) => acc + next);
     public DateTime CreatedAt { get; private set; }
-
+    private Order()
+    {
+        
+    }
     public Order(CustomerId customerId)
     {
         this.CustomerId = customerId;
