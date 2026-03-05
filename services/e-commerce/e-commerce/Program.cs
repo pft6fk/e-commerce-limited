@@ -1,13 +1,15 @@
+using e_commerce.Application;
 using e_commerce.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Register Infrastructure (DbContext, Repositories)
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(AssemblyReference.Assembly));
+
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
