@@ -1,5 +1,8 @@
 using e_commerce.Api.Contracts;
+using e_commerce.Application.Products.Commands.ActivateProduct;
 using e_commerce.Application.Products.Commands.CreateProduct;
+using e_commerce.Application.Products.Commands.DeactivateProduct;
+using e_commerce.Application.Products.Commands.UpdateProductPrice;
 using e_commerce.Application.Products.Queries.GetAllProducts;
 using e_commerce.Application.Products.Queries.GetProductById;
 using MediatR;
@@ -49,5 +52,26 @@ public class ProductsController : ControllerBase
     {
         var products = await _sender.Send(new GetAllProductsQuery(), ct);
         return Ok(products);
+    }
+
+    [HttpPut("{id:guid}/price")]
+    public async Task<IActionResult> UpdatePrice(Guid id, UpdateProductPriceRequest request, CancellationToken ct)
+    {
+        await _sender.Send(new UpdateProductPriceCommand(id, request.Price, request.Currency), ct);
+        return NoContent();
+    }
+
+    [HttpPut("{id:guid}/activate")]
+    public async Task<IActionResult> Activate(Guid id, CancellationToken ct)
+    {
+        await _sender.Send(new ActivateProductCommand(id), ct);
+        return NoContent();
+    }
+
+    [HttpPut("{id:guid}/deactivate")]
+    public async Task<IActionResult> Deactivate(Guid id, CancellationToken ct)
+    {
+        await _sender.Send(new DeactivateProductCommand(id), ct);
+        return NoContent();
     }
 }
