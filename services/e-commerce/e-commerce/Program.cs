@@ -1,3 +1,4 @@
+using e_commerce.Api.Middleware;
 using e_commerce.Application;
 using e_commerce.Infrastructure;
 
@@ -13,6 +14,8 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
+
+app.UseMiddleware<GlobalExceptionHandler>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
