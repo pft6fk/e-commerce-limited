@@ -3,7 +3,7 @@
 public class StockItem : AggregateRoot<ProductId>
 {
     public int AvailableQuantity { get; private set; }
-    public byte[] RowVersion { get; private set; }
+    public byte[] RowVersion { get; private set; } = null!;
     private StockItem()
     {
         

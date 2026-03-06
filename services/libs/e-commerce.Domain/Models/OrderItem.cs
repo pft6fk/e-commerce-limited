@@ -2,15 +2,16 @@
 
 public class OrderItem : Entity<OrderItemId>
 {
-    public ProductId ProductId { get; private set; }
+    public ProductId ProductId { get; private set; } = null!;
     public int Quantity { get; private set; }
-    public Money UnitPrice { get; private set; }
+    public Money UnitPrice { get; private set; } = null!;
     public Money TotalPrice => UnitPrice * Quantity;
     private OrderItem()
     {
         
     }
     public OrderItem(int quantity, Money unitPrice, ProductId productId)
+        : base(OrderItemId.New())
     {
         if (quantity <= 0)
             throw new ArgumentException("Quantity must be greater than 0.");

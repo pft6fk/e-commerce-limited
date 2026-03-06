@@ -2,8 +2,8 @@
 
 public class Payment : AggregateRoot<PaymentId>
 {
-    public OrderId OrderId { get; private set; } 
-    public Money Amount { get; private set; } 
+    public OrderId OrderId { get; private set; } = null!;
+    public Money Amount { get; private set; } = null!;
     public PaymentStatus Status { get; private set; } 
     public DateTime ProcessedAt { get; private set; }
     private Payment()
@@ -11,6 +11,7 @@ public class Payment : AggregateRoot<PaymentId>
         
     }
     public Payment(OrderId orderId, Money amount)
+        : base(PaymentId.New())
     {
         if(orderId == null)
             throw new ArgumentNullException(nameof(orderId));

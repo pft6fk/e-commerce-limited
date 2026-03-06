@@ -6,7 +6,7 @@ public class Order : AggregateRoot<OrderId>
 {
     private readonly List<OrderItem> _items = new();
     public IReadOnlyCollection<OrderItem> Items => _items;
-    public CustomerId CustomerId { get; private set; }
+    public CustomerId CustomerId { get; private set; } = null!;
     public OrderStatus Status { get; private set; }
     public Money TotalPrice => _items.Select(x => x.TotalPrice).Aggregate(Money.Zero, (acc, next) => acc + next);
     public DateTime CreatedAt { get; private set; }
@@ -15,6 +15,7 @@ public class Order : AggregateRoot<OrderId>
         
     }
     public Order(CustomerId customerId)
+        : base(OrderId.New())
     {
         this.CustomerId = customerId;
         this.Status = OrderStatus.Pending;

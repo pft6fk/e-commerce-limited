@@ -4,15 +4,16 @@ namespace e_commerce.Domain.Models;
 
 public class Product: AggregateRoot<ProductId>
 {
-    public string Name { get; private set; }
-    public string Description  { get; private set; }
-    public Money Price { get; private set; }
+    public string Name { get; private set; } = null!;
+    public string Description  { get; private set; } = null!;
+    public Money Price { get; private set; } = null!;
     public bool IsActive { get; private set; }
     private Product()
     {
         
     }
     public Product(string name, Money price, string description, bool isActive)
+        : base(ProductId.New())
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Product name cannot be null or empty.");
