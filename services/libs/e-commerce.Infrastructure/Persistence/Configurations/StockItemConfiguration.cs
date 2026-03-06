@@ -20,8 +20,8 @@ public class StockItemConfiguration : IEntityTypeConfiguration<StockItem>
 
         builder.Property(s => s.AvailableQuantity);
 
-        builder.Property(s => s.RowVersion)
-            .IsRowVersion();
+        builder.Ignore(s => s.RowVersion);
+        builder.UseXminAsConcurrencyToken();
 
         builder.Ignore(s => s.DomainEvents);
     }

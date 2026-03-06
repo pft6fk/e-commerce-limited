@@ -1,4 +1,5 @@
 using e_commerce.Api.Contracts;
+using e_commerce.Application.Stock.Commands.CreateStock;
 using e_commerce.Application.Stock.Commands.IncreaseStock;
 using e_commerce.Application.Stock.Commands.ReduceStock;
 using e_commerce.Application.Stock.Queries.GetStockByProductId;
@@ -16,6 +17,13 @@ public class StockController : ControllerBase
     public StockController(ISender sender)
     {
         _sender = sender;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateStockRequest request, CancellationToken ct)
+    {
+        var stockId = await _sender.Send(new CreateStockCommand(request.ProductId, request.Quantity), ct);
+        return CreatedAtAction(nameof(GetByProductId), new { productId = request.ProductId }, stockId);
     }
 
     [HttpGet("by-product/{productId:guid}")]
