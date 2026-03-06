@@ -1,4 +1,4 @@
-﻿namespace e_commerce.Domain.ValueObjects;
+namespace e_commerce.Domain.ValueObjects;
 
 public class Money
 {
@@ -34,6 +34,9 @@ public class Money
     }
     public static bool operator ==(Money left, Money right)
     {
+        if (left is null && right is null) return true;
+        if (left is null || right is null) return false;
+
         if (left.Currency.ToLower() != right.Currency.ToLower())
             throw new InvalidOperationException("Cannot compare different currencies.");
 
@@ -42,10 +45,17 @@ public class Money
     }
     public static bool operator !=(Money left, Money right)
     {
-        if (left.Currency.ToLower() != right.Currency.ToLower())
-            throw new InvalidOperationException("Cannot compare different currencies.");
+        return !(left == right);
+    }
 
-        return left.Amount != right.Amount;
+    public override bool Equals(object? obj)
+    {
+        if (obj is not Money other) return false;
+        return this == other;
+    }
 
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Amount, Currency.ToLower());
     }
 }
