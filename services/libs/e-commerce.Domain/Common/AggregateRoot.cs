@@ -1,6 +1,6 @@
 ﻿namespace e_commerce.Domain.Common;
 
-public abstract class AggregateRoot<TId> : Entity<TId>
+public abstract class AggregateRoot<TId> : Entity<TId>, IAggregateRoot
 {
     private readonly List<IDomainEvent> _domainEvents = new();
 
