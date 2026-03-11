@@ -13,9 +13,16 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 app.UseMiddleware<GlobalExceptionHandler>();
+
+app.UseCors(policy => policy
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
