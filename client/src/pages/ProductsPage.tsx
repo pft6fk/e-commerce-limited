@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Product } from "../types";
 import { getProducts }  from "../api/products";
-
+import { Link } from 'react-router-dom'
 function ProductsPage(){
     const [products, setProducts] = useState<Product[]>([]);
     
@@ -11,6 +11,7 @@ function ProductsPage(){
 
     return (
         <div>
+            {/* <button><Link to="/create-product">Create Product</Link></button> */}
             <h1>Products</h1>
             {products.map(product => (
                 <div key={product.id}> 
