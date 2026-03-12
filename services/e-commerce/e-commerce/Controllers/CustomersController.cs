@@ -1,5 +1,6 @@
 using e_commerce.Api.Contracts;
 using e_commerce.Application.Customers.Commands.RegisterCustomer;
+using e_commerce.Application.Customers.Queries.GetAllCustomers;
 using e_commerce.Application.Customers.Queries.GetCustomerById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,13 @@ public class CustomersController : ControllerBase
     public CustomersController(ISender sender)
     {
         _sender = sender;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll(CancellationToken ct)
+    {
+        var customers = await _sender.Send(new GetAllCustomersQuery(), ct);
+        return Ok(customers);
     }
 
     [HttpPost]

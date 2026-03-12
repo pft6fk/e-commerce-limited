@@ -6,4 +6,5 @@ namespace e_commerce.Application.Interfaces;
 public interface ICustomerRepository : IRepository<Customer, CustomerId>
 {
     Task<Customer?> GetByEmailAsync(string email, CancellationToken ct = default);
+    Task<List<Customer>> GetAllAsync(CancellationToken ct = default);
 }

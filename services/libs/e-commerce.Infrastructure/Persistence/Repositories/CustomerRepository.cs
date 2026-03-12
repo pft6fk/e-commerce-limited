@@ -14,4 +14,9 @@ public class CustomerRepository : Repository<Customer, CustomerId>, ICustomerRep
         return await Context.Customers
             .FirstOrDefaultAsync(c => c.Email == email, ct);
     }
+
+    public async Task<List<Customer>> GetAllAsync(CancellationToken ct = default)
+    {
+        return await Context.Customers.ToListAsync(ct);
+    }
 }
